@@ -3,4 +3,8 @@
   <groupId>com.revature.p0</groupId>
   <artifactId>project-zero</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  <properties>
+  	<maven.compiler.source>1.8</maven.compiler.source>
+  	<maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
 </project>
