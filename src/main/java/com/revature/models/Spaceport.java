@@ -8,7 +8,7 @@ import java.util.Set;
 public class Spaceport {
 	
 	private String name;
-	private Set<Ship> ships;
+	private ArrayList<Ship> ships =  new ArrayList<Ship>(0);
 	private ArrayList<Employee> employees = new ArrayList<Employee>(0);
 	private float money;
 	private float checkInFee;
@@ -37,6 +37,16 @@ public class Spaceport {
 		} else {
 			s+=employees.get(0).getName()+".";
 		}
+		if (ships.size()==0) {
+			s+=" No ships docked here.";
+		} else if(ships.size()>1) {
+			for (int i=0;i<ships.size()-1;i++){
+				s += ships.get(i).getName()+", ";
+			}
+			s+="and "+ships.get(ships.size()-1).getName()+" are docked here.";
+		} else {
+			s+=" "+ships.get(0).getName()+" is docked here.";
+		}
 		return s;
 	}
 	
@@ -47,10 +57,10 @@ public class Spaceport {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Set<Ship> getShips() {
+	public ArrayList<Ship> getShips() {
 		return ships;
 	}
-	public void setShips(Set<Ship> ships) {
+	public void setShips(ArrayList<Ship> ships) {
 		this.ships = ships;
 	}
 	public float getMoney() {

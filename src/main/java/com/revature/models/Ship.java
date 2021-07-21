@@ -64,7 +64,7 @@ public class Ship {
 		this.stolen = stolen;
 	}
 
-	public boolean isHasContraband() {
+	public boolean HasContraband() {
 		return hasContraband;
 	}
 
