@@ -1,30 +1,28 @@
 package com.revature;
 
-import com.revature.models.Customer;
-import com.revature.models.Employee;
-import com.revature.models.Menu;
-import com.revature.models.Ship;
-import com.revature.models.Spaceport;
+import com.revature.controllers.CustomerController;
+
+import io.javalin.Javalin;
 
 public class Driver {
 
 	public static void main(String[] args) {
-		Menu m = new Menu();
-		m.loginMenu();
 		
-//		System.out.println(sp);
-//		System.out.println(cust);
-//		cust.inquire(sp);
-//		cust.checkShipOut(falcon, sp);
-//		cust.checkShipIn(falcon, sp);
-//		System.out.println(sp);
-//		System.out.println(cust);
-//		cust.inquire(sp);
-//		cust.checkShipIn(falcon, sp);
-//		cust.checkShipOut(falcon, sp);
-//		System.out.println(sp);
-//		System.out.println(cust);
-//		cust.inquire(sp);
+		CustomerController cc = new CustomerController();
+		Javalin app = Javalin.create().start(8080);
+		
+		app.get("/", (ctx) -> ctx.html("Hello World"));
+		app.post("/customers", cc::login);
+		app.post("/employees", cc::loginEmployee);
+		
+		app.put("/customers/:name", cc::register);
+		app.put("/employees/:name", cc::registerEmployee);
+
+		app.delete("/customers", cc::logout);
+		app.get("/customers/:name/status", cc::viewStatus);
+		
+		app.put("/customers/:name/ship", cc::registerShip);
+		app.delete("/customers/:customer-name/:ship-name", cc::destroyShip);
 
 	}
 

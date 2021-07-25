@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.revature.models.Customer;
+import com.revature.models.Ship;
 
 public class CustomerDAO {
 	private static String filename = "customers.dat";
@@ -34,8 +35,28 @@ public class CustomerDAO {
 			.orElse(null);
 	}
 	
+	public void addShip(Customer c, Ship s) {
+		ArrayList<Ship> ships = c.getShips();
+		ships.add(s);
+		c.setShips(ships);
+		customers.set(customers.indexOf(c), c);
+	}
+	
+	public void removeShip(Customer c, Ship ship) {
+		ArrayList<Ship> ships = c.getShips();
+		ships.remove(ship);
+		c.setShips(ships);
+		customers.set(customers.indexOf(c), c);
+	}
 	
 	public void writeToFile() {
 		new DataSerializer<Customer>().writeObjectsToFile(customers, filename);
 	}
+
+	public Ship getShip(Customer c, String shipName) {
+		return c.getShips().stream().filter(ship -> ship.getName().equals(shipName)).findFirst().orElse(null);
+				
+	}
+
+
 }

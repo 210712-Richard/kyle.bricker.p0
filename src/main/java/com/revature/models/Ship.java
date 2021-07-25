@@ -1,41 +1,35 @@
 package com.revature.models;
 
-public class Ship {
+import java.io.Serializable;
+
+public class Ship implements Serializable{
 
 	private String name;
-	private Customer owner;
-	private Spaceport garage;
+	private String owner;
+	private boolean docked;
 	private boolean stolen;
 	private boolean hasContraband;
+	private static final long serialVersionUID = 2622951313170302025L;
 	
-	public Ship(Customer owner, String name) {
+	public Ship() {};
+	
+	public Ship(String owner, String name) {
 		this.owner = owner;
-		this.owner.getShips().add(this);
 		this.name=name;
 	}
-	public Ship(Customer owner, String name, boolean stolen, boolean hasContraband) {
+	public Ship(String owner, String name, boolean stolen, boolean hasContraband) {
 		this(owner,name);
 		this.stolen=stolen;
 		this.hasContraband=hasContraband;
 	}
-	
-	public Ship(String name, Customer owner, boolean stolen, boolean hasContraband) {
-		this(owner,name);
-		this.stolen = stolen;
-		this.hasContraband = hasContraband;
-	}
-	public void destroy() {
-		owner.getShips().remove(this);
-		this.getGarage().getShips().remove(this);
-	}
 
 	public String toString() {
 		String s = "";
-		s+= "The "+this.name+", property of "+this.owner.getName();
-		if (this.garage == null) {
+		s+= "The "+this.name+".";
+		if (!this.docked) {
 			s+=". Not docked.";
 		} else {
-			s+=". Currently docked at "+this.garage.getName();
+			s+=". Currently docked.";
 		}
 		return s;
 	}
@@ -48,11 +42,11 @@ public class Ship {
 		this.name = name;
 	}
 
-	public Customer getOwner() {
+	public String getOwner() {
 		return owner;
 	}
 
-	public void setOwner(Customer owner) {
+	public void setOwner(String owner) {
 		this.owner = owner;
 	}
 
@@ -71,13 +65,13 @@ public class Ship {
 	public void setHasContraband(boolean hasContraband) {
 		this.hasContraband = hasContraband;
 	}
-
-	public Spaceport getGarage() {
-		return garage;
+	
+	public boolean isDocked() {
+		return docked;
 	}
 
-	public void setDocked(Spaceport garage) {
-		this.garage = garage;
+	public void setDocked(boolean docked) {
+		this.docked = docked;
 	}
 
 }
