@@ -27,9 +27,9 @@ public class Ship implements Serializable{
 		String s = "";
 		s+= "The "+this.name+".";
 		if (!this.docked) {
-			s+=". Not docked.";
+			s+=" Not docked.";
 		} else {
-			s+=". Currently docked.";
+			s+=" Currently docked.";
 		}
 		return s;
 	}

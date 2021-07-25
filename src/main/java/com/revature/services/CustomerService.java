@@ -54,48 +54,37 @@ public class CustomerService {
 	}
 	
 	public void checkShipIn(Customer c, Ship ship) {
-		if (ship.isDocked()) {
-			System.out.println("That ship is already checked in.");
-			return;
-		} else if (c.getMoney() < 800) {
-			System.out.println("You don't have enough money.");
-			return;
-		} else {
-			System.out.println("You paid 800 and checked the "+ship.getName()+" into the spaceport.");
-			c.setMoney(c.getMoney() - 800);
-		}
+		c.setMoney(c.getMoney() - 800);
+		ship.setDocked(true);
+		cd.writeToFile();
 	}
 
 	public void checkShipOut(Customer c, Ship ship) {
-		if (!ship.isDocked()) {
-			System.out.println("That ship is not docked.");
-			return;
-		} else if (c.getMoney() < 200) {
-			System.out.println("You don't have enough money.");
-			return;
-		} else {
-			c.setMoney(c.getMoney() - 200);
-			System.out.println("You paid 200 and checked the "+ship.getName()+" out of the spaceport.");
-		}
+		c.setMoney(c.getMoney() - 200);
+		ship.setDocked(false);
+		cd.writeToFile();
 	}
 
-	public void inquire(Customer c) {
-		System.out.println("Here are the ships you have in this port:");
+	public String inquire(Customer c) {
+		String s = "";
+		s+="Here are the ships you have in this port:\n";
 		for (Ship ship : c.getShips()) {
 			if (ship.isDocked()) {
-				System.out.println("   " + ship.getName());
+				s+="   " + ship.getName()+"\n";
 			}
 		}
+		return s;
 	}
 	
-	public void examine(Ship ship) {
-		System.out.println(ship);
+	public String examine(Ship ship) {
+		String s = ship.toString()+"\n";
 		if (ship.isStolen()) {
-			System.out.println("Records indicate this ship was stolen.");
+			s+="Records indicate this ship was stolen.\n";
 		}
 		if (ship.HasContraband()) {
-			System.out.println("This ship has illegal materials in its storage.");
+			s+="This ship has illegal materials in its storage.\n";
 		}
+		return s;
 	}
 	
 

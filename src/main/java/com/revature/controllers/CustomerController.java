@@ -93,7 +93,7 @@ public class CustomerController {
 		String shipName = ctx.pathParam("ship-name");
 		Customer loggedCustomer = (Customer) ctx.sessionAttribute("loggedCustomer");
 		Customer victim = cs.login(customerName);
-		if (loggedCustomer.getClass().getSimpleName().equals("Employee")){
+		if (loggedCustomer.getClass().getSimpleName().equals("Employee") && cs.getShip(victim, shipName).isDocked()){
 			cs.destroyShip(victim, cs.getShip(victim, shipName));
 			ctx.json(victim);
 			return;
@@ -101,6 +101,65 @@ public class CustomerController {
 		else {			
 			ctx.status(403);
 			return;
+		}
+	}
+	
+	public void checkShipIn(Context ctx) {
+		String shipName = ctx.pathParam("name");
+		Customer loggedCustomer = (Customer) ctx.sessionAttribute("loggedCustomer");
+		
+		Ship ship = cs.getShip(loggedCustomer, shipName);
+		if (ship.isDocked()) {
+			ctx.html("That ship is already docked.");
+			ctx.status(401);
+			return;
+		} else if (loggedCustomer.getMoney() < 800) {
+			ctx.html("You don't have enough money.");
+			ctx.status(401);
+			return;
+		} else {
+			cs.checkShipIn(loggedCustomer, ship);
+			ctx.json(ship);
+		}
+	}
+	
+	public void checkShipOut(Context ctx) {
+		String shipName = ctx.pathParam("name");
+		Customer loggedCustomer = (Customer) ctx.sessionAttribute("loggedCustomer");
+		
+		Ship ship = cs.getShip(loggedCustomer, shipName);
+		if (!ship.isDocked()) {
+			ctx.html("That ship is not currently docked.");
+			ctx.status(401);
+			return;
+		} else if (loggedCustomer.getMoney() < 200) {
+			ctx.html("You don't have enough money.");
+			ctx.status(401);
+			return;
+		} else {
+			cs.checkShipOut(loggedCustomer, ship);
+			ctx.json(ship);
+		}
+	}
+	
+	public void inquire(Context ctx) {
+		Customer loggedCustomer = (Customer) ctx.sessionAttribute("loggedCustomer");
+		ctx.html(cs.inquire(loggedCustomer));
+	}
+	
+	public void examine(Context ctx) {
+		Customer loggedCustomer = (Customer) ctx.sessionAttribute("loggedCustomer");
+		String shipName = ctx.pathParam("ship-name");
+		String customerName = ctx.pathParam("customer-name");
+		Customer victim = cs.login(customerName);
+		if (!loggedCustomer.getClass().getSimpleName().equals("Employee")) {
+			ctx.status(403);
+			ctx.html("You are not authorized to examine docked ships.");
+		} else if (!cs.getShip(victim, shipName).isDocked()) {
+			ctx.status(403);
+			ctx.html("That ship is not docked, you may not examine it.");
+		} else {
+			ctx.html(cs.examine(cs.getShip(victim, shipName)));
 		}
 	}
 }

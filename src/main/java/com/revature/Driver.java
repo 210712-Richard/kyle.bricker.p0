@@ -24,6 +24,11 @@ public class Driver {
 		app.put("/customers/:name/ship", cc::registerShip);
 		app.delete("/customers/:customer-name/:ship-name", cc::destroyShip);
 
+		app.post("/ships/dock/:name", cc::checkShipIn);
+		app.post("/ships/undock/:name", cc::checkShipOut);
+		
+		app.get("/ships", cc::inquire);
+		app.get("/ships/examine/:customer-name/:ship-name", cc::examine);
 	}
 
 }
