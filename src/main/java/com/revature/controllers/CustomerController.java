@@ -77,13 +77,20 @@ public class CustomerController {
 	}
 	
 	public void registerShip(Context ctx) {
-		String name = ctx.pathParam("name");
+		String name = ctx.pathParam("customer-name");
 		Customer loggedCustomer = (Customer) ctx.sessionAttribute("loggedCustomer");
 		if(loggedCustomer == null || !loggedCustomer.getName().equals(name)) {
 			ctx.status(403);
 			return;
 		}
 		Ship newShip = ctx.bodyAsClass(Ship.class);
+		newShip.setOwner(loggedCustomer.getName());
+		if(((Boolean) newShip.isStolen()).equals(null)) {
+			newShip.setStolen(false);
+		}
+		if(((Boolean) newShip.HasContraband()).equals(null)) {
+			newShip.setHasContraband(false);
+		}
 		cs.addShip(loggedCustomer, newShip);
 		ctx.json(loggedCustomer);
 	}

@@ -15,13 +15,13 @@ public class Driver {
 		app.post("/customers", cc::login);
 		app.post("/employees", cc::loginEmployee);
 		
-		app.put("/customers/:name", cc::register);
-		app.put("/employees/:name", cc::registerEmployee);
+		app.put("/customers", cc::register);
+		app.put("/employees", cc::registerEmployee);
 
 		app.delete("/customers", cc::logout);
 		app.get("/customers/:name/status", cc::viewStatus);
 		
-		app.put("/customers/:name/ship", cc::registerShip);
+		app.put("/customers/:customer-name/ship", cc::registerShip);
 		app.delete("/customers/:customer-name/:ship-name", cc::destroyShip);
 
 		app.post("/ships/dock/:name", cc::checkShipIn);
